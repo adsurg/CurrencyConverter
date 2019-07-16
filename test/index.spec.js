@@ -4,14 +4,13 @@ import request from 'supertest';
 afterEach(() => 
   server.close());
 
-describe('routes: index', () => {
-  test('should respond as expected', () => {
-    return request(server).get('/exchange-rate/GBP/to/USD')
+describe('get exchange rate', () => {
+  test('correct exchange rate for USD to EUR', () => {
+    return request(server).get('/exchange-rate/USD/to/EUR')
     .then(response => {
         expect(response.status).toEqual(200);
         expect(response.type).toEqual('application/json');
-        expect(response.body.rate).toEqual('GBP to USD');
+        expect(response.body.rate).toEqual(0.87815);
             })
-    //expect(response.body.data).toEqual('Sending some JSON');
   });
 });
