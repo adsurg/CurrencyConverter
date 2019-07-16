@@ -7,7 +7,8 @@ afterEach(() =>
 
 describe('get exchange rate', () => {
     it('returns the correct USD to EUR exchange rate', async () => {
-        const response = await request(server).get('/exchange-rate/USD/to/EUR');
+        const response = await request(server)
+            .get('/exchange-rate/USD/to/EUR');
 
         expect(response.status).toEqual(200);
         expect(response.type).toEqual('application/json');
@@ -15,7 +16,8 @@ describe('get exchange rate', () => {
     });
 
     it('returns the correct GBP to USD exchange rate', async () => {
-        const response = await request(server).get('/exchange-rate/GBP/to/USD');
+        const response = await request(server)
+            .get('/exchange-rate/GBP/to/USD');
 
         expect(response.status).toEqual(200);
         expect(response.type).toEqual('application/json');
@@ -25,7 +27,8 @@ describe('get exchange rate', () => {
 
 describe('convert currency', () => {
     it('returns the correct number of Euros from US Dollars', async () => {
-        const response = await request(server).get('/convert/12.34/USD/to/EUR');
+        const response = await request(server)
+            .get('/convert/12.34/USD/to/EUR');
 
         expect(response.status).toEqual(200);
         expect(response.type).toEqual('application/json');
@@ -36,7 +39,8 @@ describe('convert currency', () => {
     });
 
     it('returns the correct number of US Dollars from Pounds', async () => {
-        const response = await request(server).get('/convert/45.67/GBP/to/USD');
+        const response = await request(server)
+            .get('/convert/45.67/GBP/to/USD');
 
         expect(response.status).toEqual(200);
         expect(response.type).toEqual('application/json');
@@ -45,3 +49,25 @@ describe('convert currency', () => {
         expect(response.body.rate).toBeCloseTo(1.27277, 5);
     });
 });
+
+describe('can sum and convert different currencies', () => {
+    it('returns a sum of Pounds and Euros to Canadian Dollars', () => {
+        const response = await request(server)
+            .post('/sumas/CAD', 
+                [
+                    {
+                        currency: 'EUR',
+                        value: 10.84
+                    },
+                    {
+                        currency: 'GBP',
+                        value: 45.67
+                    }
+                ]);
+ 
+        expect(response.status).toEqual(200);
+        expect(response.type).toEqual('application/json');
+        expect(response.body.value).toBeCloseTo(92.82, 2);
+        expect(response.body.currency).toBe('CAD');
+    })
+})
