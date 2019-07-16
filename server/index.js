@@ -7,7 +7,7 @@ const PORT = process.env.PORT || 8081;
 
 router.get("/exchange-rate/:source/to/:destination", ctx => {
   ctx.body = {
-    rate: `${ctx.params.source} to ${ctx.params.destination}`
+    rate: 0.87815
   };
 });
 
